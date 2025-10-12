@@ -23,5 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 .env
-.env.example
-.env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Note: .env.production is safe to commit for frontend (contains only public VITE_ variables)
