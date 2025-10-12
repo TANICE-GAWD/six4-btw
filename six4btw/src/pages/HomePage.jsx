@@ -174,8 +174,16 @@ export const HomePage = () => {
               transition={{ delay: 0.3, duration: 0.5 }}
             >
               Upload an image and get a performance rating
-              By Prince Sharma under the banner of TANICE
+              
             </motion.p>
+            <motion.h3 
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900"
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              By Prince Sharma under the banner of TANICE
+            </motion.h3>
           </div>
         </div>
       </motion.header>
