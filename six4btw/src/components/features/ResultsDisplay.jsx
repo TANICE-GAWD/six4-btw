@@ -231,7 +231,7 @@ const ResultsDisplay = ({
           Rate Another Aesthetic
         </Button>
 
-        <Button
+        {/* <Button
           onClick={async () => {
             try {
               const shareText = score >= 60
@@ -260,7 +260,7 @@ const ResultsDisplay = ({
         >
           <span className="mr-2"></span>
           Share the Vibes
-        </Button>
+        </Button> */}
       </motion.div>
 
       {/* Detailed Analysis Stats */}
