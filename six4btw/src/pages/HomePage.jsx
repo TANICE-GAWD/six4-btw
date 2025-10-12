@@ -174,6 +174,7 @@ export const HomePage = () => {
               transition={{ delay: 0.3, duration: 0.5 }}
             >
               Upload an image and get a performance rating
+              By Prince Sharma under the banner of TANICE
             </motion.p>
           </div>
         </div>
