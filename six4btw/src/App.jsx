@@ -24,33 +24,33 @@ const AppLoadingFallback = () => (
 
 
 function App() {
-  
+
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
-      
+
       const checkInitialPerformance = () => {
         performanceMonitor.checkPerformance();
-        
-        
+
+
         const criticalComponents = [
           'HomePage',
-          'ImageUploader', 
+          'ImageUploader',
           'ResultsDisplay',
           'RatingMeter'
         ];
 
       };
-      
-      
+
+
       const timeoutId = setTimeout(checkInitialPerformance, 2000);
-      
+
       return () => clearTimeout(timeoutId);
     }
   }, []);
 
   return (
-    <ErrorBoundary 
-      isCritical={true} 
+    <ErrorBoundary
+      isCritical={true}
       showDetails={process.env.NODE_ENV === 'development'}
       fallbackComponent={({ error, retry }) => (
         <div className="min-h-screen bg-red-50 flex items-center justify-center p-4">
@@ -84,7 +84,7 @@ function App() {
         <div className="min-h-screen bg-gray-50 flex flex-col">
           {/* Network Status Monitor */}
           <LazyNetworkStatus position="top" />
-          
+
           {/* Main Application Content */}
           <div className="flex-1 pt-16">
             <HomePage />

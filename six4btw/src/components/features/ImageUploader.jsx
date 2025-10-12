@@ -245,41 +245,38 @@ export const ImageUploader = ({
     >
       {/* Main upload area */}
       <motion.div
-        {...getRootProps()}
+        {...(selectedFile ? {} : getRootProps())}
         className={`${getDropzoneClasses()} min-h-[300px]`}
         variants={dropzoneVariants}
         animate={getDropzoneState()}
-        whileHover={!isUploading ? "hover" : undefined}
-        role="button"
-        tabIndex={isUploading ? -1 : 0}
+        whileHover={!isUploading && !selectedFile ? "hover" : undefined}
+        role={selectedFile ? undefined : "button"}
+        tabIndex={isUploading || selectedFile ? -1 : 0}
         aria-label={
           isUploading 
             ? `Uploading image, ${uploadProgress}% complete`
             : selectedFile 
-              ? `Selected file: ${selectedFile.name}. Press Enter or Space to upload, or click to choose a different file.`
+              ? `Selected file: ${selectedFile.name}`
               : 'Click or drag and drop to upload an image file. Supports JPG, PNG, GIF, WebP up to 10MB.'
         }
         aria-describedby="upload-instructions upload-status"
         aria-live="polite"
         aria-atomic="true"
         onKeyDown={(e) => {
-          if ((e.key === 'Enter' || e.key === ' ') && !isUploading) {
+          if ((e.key === 'Enter' || e.key === ' ') && !isUploading && !selectedFile) {
             e.preventDefault();
-            if (selectedFile) {
-              handleUpload();
-            } else {
-              
-              const input = e.currentTarget.querySelector('input[type="file"]');
-              input?.click();
-            }
+            const input = e.currentTarget.querySelector('input[type="file"]');
+            input?.click();
           }
         }}
       >
-        <input 
-          {...getInputProps()} 
-          aria-label="Choose image file to upload"
-          aria-describedby="upload-instructions"
-        />
+        {!selectedFile && (
+          <input 
+            {...getInputProps()} 
+            aria-label="Choose image file to upload"
+            aria-describedby="upload-instructions"
+          />
+        )}
         
         <AnimatePresence mode="wait" initial={false}>
           {isUploading ? (
@@ -376,36 +373,6 @@ export const ImageUploader = ({
                   </p>
                 </motion.div>
               </div>
-              
-              <motion.div 
-                className="flex flex-col sm:flex-row gap-3 justify-center px-4"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.3 }}
-              >
-                <Button
-                  onClick={handleUpload}
-                  variant="primary"
-                  disabled={isUploading}
-                  className="w-full sm:w-auto min-w-[180px]"
-                  aria-describedby="upload-button-desc"
-                  aria-label={`Upload ${selectedFile.name} and get performance rating`}
-                >
-                  Upload & Rate Image
-                </Button>
-                <Button
-                  onClick={handleReset}
-                  variant="secondary"
-                  disabled={isUploading}
-                  className="w-full sm:w-auto min-w-[180px]"
-                  aria-label="Remove current selection and choose a different image file"
-                >
-                  Choose Different Image
-                </Button>
-              </motion.div>
-              <div id="upload-button-desc" className="sr-only">
-                Upload the selected image to get an AI performance rating
-              </div>
             </motion.div>
           ) : (
             
@@ -464,6 +431,42 @@ export const ImageUploader = ({
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Action buttons - separate from dropzone when file is selected */}
+      {selectedFile && !isUploading && (
+        <motion.div 
+          className="mt-4 flex flex-col sm:flex-row gap-3 justify-center px-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.3 }}
+        >
+          <Button
+            onClick={handleUpload}
+            variant="primary"
+            disabled={isUploading}
+            className="w-full sm:w-auto min-w-[180px]"
+            aria-describedby="upload-button-desc"
+            aria-label={`Upload ${selectedFile.name} and get performance rating`}
+          >
+            Upload & Rate Image
+          </Button>
+          <Button
+            onClick={handleReset}
+            variant="secondary"
+            disabled={isUploading}
+            className="w-full sm:w-auto min-w-[180px]"
+            aria-label="Remove current selection and choose a different image file"
+          >
+            Choose Different Image
+          </Button>
+        </motion.div>
+      )}
+      
+      {selectedFile && (
+        <div id="upload-button-desc" className="sr-only">
+          Upload the selected image to get an AI performance rating
+        </div>
+      )}
 
       {/* Error display */}
       <AnimatePresence>
